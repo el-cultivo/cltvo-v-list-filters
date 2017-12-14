@@ -3,7 +3,9 @@ import Vue from 'vue'
 import {listFilters, isPath, isPathInObjArray, isStringArray} from '../src/list-filters'
 import {users, makeUsers} from './list-filters/users.js'
 
-fdescribe('list-filters.js', () => {
+const myTable = Vue.extend({template: '<div v-for="item in list" v-text="item"></div>', mixins: [listFilters], props: ['list']})
+
+describe('list-filters.js', () => {
 	let vm = {}
 
 	beforeEach(() => {
@@ -11,6 +13,8 @@ fdescribe('list-filters.js', () => {
 			replace:false,//no es necesario fuera del test, es sólo para cuando usamos el método mount sobre el body
 			template: `
 			<div>
+				<my-table :list="[1,2,3]"></my-table>
+				<my-table :list="[4,5,6]"></my-table>
 			</div>`,
 			mixins: [listFilters],
 			// ready() {console.log(this.$children);},
@@ -20,12 +24,11 @@ fdescribe('list-filters.js', () => {
 					event: {meetings: []}
 				},
 			},
-			components: {},
+			components: { myTable },
 			methods: {
 			}
 		}).$mount('body')
 		// vm.list = users
-
 	}) 
 	
 	it('pude encontrar uno o más usuarios por nombre', function(done) {
@@ -210,13 +213,15 @@ fdescribe('list-filters.js', () => {
 				let newbuddy = vm.list[98]
 				newbuddy.full_name = 'Buddy100'
 				vm.list.push(newbuddy)
-
+				vm.search = ''
 				Vue.nextTick(()=>{
+
 					expect(vm.memorized_filters['filter_by_state$search_statey8']).toEqual(undefined)
+					vm.search = 'statey8'
 					setTimeout(()=>{
 						expect(vm.memorized_filters['filter_by_state$search_statey8'].length).toEqual(found.length + 1)
 						done()
-					}, 300)
+					}, 200)
 				})
 			}, 300)
 		});
@@ -266,6 +271,14 @@ fdescribe('list-filters.js', () => {
 				}, 300)
 			}, 300)
 		});
+
+		it('puede renderear multiples componentes con listas filtables correctamente', done => {
+			setTimeout(() => {
+				expect(vm.$children[0].filtered_list).toEqual([1,2,3])
+				expect(vm.$children[1].filtered_list).toEqual([4,5,6])
+				done()
+			}, 300)
+		})
 	});
 });
 
