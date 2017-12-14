@@ -57,9 +57,9 @@ export const listFilters = {
     },
 
     methods: {
-        filterList: debounce(function() {
+        filterList: function() {
             let filters = R.path([this.filter_by, 'filters'], this.filters)
-            //Optimización: memoización
+            //Optimización: memoización            
             let filtered_list = R.pathOr([], ['memorized_filters', `filter_by_${this.filter_by}$search_${this.search}`], this)
 
             if (filtered_list.length !== 0) {
@@ -88,11 +88,12 @@ export const listFilters = {
             this.previous_search = this.search
             // console.log("this.previous_search", this.previous_search);
             this.previous_filter = this.filter_by
-        }, 100)
+        }
     },
 
     watch: {
         list() {//al actualizarse la lista original tenemos que resetar todo el estado que nos permite optimizar las búsquedas
+            
             this.memorized_filters = {}
             this.previous_search = ''
             this.filterList()
@@ -106,8 +107,8 @@ export const listFilters = {
             this.filterList()
         },
 
-        search() {
+        search: debounce(function () {
             this.filterList()
-        }
+        }, 100)
     }
 }

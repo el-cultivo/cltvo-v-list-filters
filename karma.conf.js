@@ -8,9 +8,9 @@ module.exports = function(config) {
         // browsers: ['Chrome'],
 
         files: [
-            './node_modules/jquery/dist/jquery.js',
-            './specs/stubs/materialize.js',
-            './specs/stubs/vue-html5-editor.js',
+            // './node_modules/jquery/dist/jquery.js',
+            // './specs/stubs/materialize.js',
+            // './specs/stubs/vue-html5-editor.js',
             './node_modules/phantomjs-polyfill/bind-polyfill.js',
             { pattern: 'test-context.js'}
         ],
@@ -40,7 +40,7 @@ module.exports = function(config) {
         },
         webpack: {
             entry: {
-                index: './src/example.js'
+                index: './src/list-filters.js'
             },
             module: {
                 rules: [
