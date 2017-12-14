@@ -1,6 +1,6 @@
 {
   "name": "cltvo-v-list-filters",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Mixin de Vue 1.0 para filtrado de listas con varias optimizaciones",
   "main": "dist/cltvo-v-list-filters.js",
   "scripts": {
